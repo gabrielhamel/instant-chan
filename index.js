@@ -95,7 +95,7 @@ async function bindChannel(res, guild, channelId) {
 }
 
 function help(res) {
-    res.send(`**${config.getPrefix()} bins <channelId>**: Transform a channel into an cloneable instance.`);
+    res.send(`**${config.getPrefix()} bind <channelId>**: Transform a channel into an cloneable instance.`);
 }
 
 function findInstantChanParent(childId) {
@@ -212,8 +212,10 @@ bot.on('message', async obj => {
         case 'help':
             await help(obj.channel);
             break;
+        // Disabled for permissions
         case 'bind':
-            bindChannel(obj.channel, obj.guild, args[2]);
+            obj.channel.send('Not implemented yet !');
+            //bindChannel(obj.channel, obj.guild, args[2]);
             break;
         default:
             obj.channel.send(`Invalid command. Type **${config.getPrefix()} help** for more informations.`);
