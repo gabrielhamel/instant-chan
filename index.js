@@ -214,8 +214,11 @@ bot.on('message', async obj => {
             break;
         // Disabled for permissions
         case 'bind':
-            obj.channel.send('Not implemented yet !');
-            //bindChannel(obj.channel, obj.guild, args[2]);
+            if (obj.member.hasPermission('MANAGE_CHANNELS') === false) {
+                obj.channel.send('Access denied');
+                break;
+            }
+            bindChannel(obj.channel, obj.guild, args[2]);
             break;
         default:
             obj.channel.send(`Invalid command. Type **${config.getPrefix()} help** for more informations.`);
