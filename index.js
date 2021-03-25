@@ -3,6 +3,7 @@ require('dotenv').config();
 const getenv = require('getenv');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+const app = require('express')();
 
 const channelBounds = {};
 
@@ -230,3 +231,6 @@ bot.on('message', async obj => {
 })
 
 bot.login(getenv('BOT_TOKEN'));
+
+app.get('/', (req, res) => res.send('Hello world'));
+app.listen(8080);
