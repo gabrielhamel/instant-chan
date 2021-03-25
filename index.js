@@ -230,5 +230,3 @@ bot.on('message', async obj => {
 })
 
 bot.login(getenv('BOT_TOKEN'));
-
-app.get('/', (req, res) => res.send('Hello world'));
