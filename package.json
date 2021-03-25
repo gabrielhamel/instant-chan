@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "Create voice channel instantly",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node index.js"
+  },
   "author": "Gabriel Hamel",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.2.0"
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "getenv": "^1.0.0"
   }
 }

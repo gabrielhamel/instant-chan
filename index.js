@@ -1,8 +1,12 @@
-const config = require('./config')
+require('dotenv').config();
+
+const getenv = require('getenv');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 const channelBounds = {};
+
+const prefix = '!instant';
 
 function isBound(channelId) {
     return channelBounds[channelId] !== undefined;
@@ -95,7 +99,7 @@ async function bindChannel(res, guild, channelId) {
 }
 
 function help(res) {
-    res.send(`**${config.getPrefix()} bind <channelId>**: Transform a channel into an cloneable instance.`);
+    res.send(`**${prefix} bind <channelId>**: Transform a channel into an cloneable instance.`);
 }
 
 function findInstantChanParent(childId) {
@@ -202,7 +206,7 @@ bot.on('message', async obj => {
     const msg = obj.content;
 
     // Not a command for me
-    if (msg.startsWith(`${config.getPrefix()}`) === false) {
+    if (msg.startsWith(`${prefix}`) === false) {
         return;
     }
 
@@ -221,8 +225,8 @@ bot.on('message', async obj => {
             bindChannel(obj.channel, obj.guild, args[2]);
             break;
         default:
-            obj.channel.send(`Invalid command. Type **${config.getPrefix()} help** for more informations.`);
+            obj.channel.send(`Invalid command. Type **${prefix} help** for more informations.`);
     };
 })
 
-bot.login(config.getToken());
+bot.login(getenv('BOT_TOKEN'));
