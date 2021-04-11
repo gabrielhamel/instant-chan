@@ -6,7 +6,7 @@ First you need the bot on your server:
 
 Invite the bot with [this url](https://discord.com/api/oauth2/authorize?client_id=717139997186326609&permissions=16778256&scope=bot)
 
-> You doesn't need to add some extra permissions.
+> You do not need to add some extra permissions.
 
 ### **Bind a vocal channel**
 
