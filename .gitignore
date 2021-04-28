@@ -1,2 +1,5 @@
-node_modules/
+# Env files
 .env
+# Rust files
+/target
+/.idea
