@@ -9,8 +9,8 @@
   "author": "Gabriel Hamel",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0",
+    "discord.js": "^12.5.3",
+    "dotenv": "^8.6.0",
     "getenv": "^1.0.0"
   }
 }

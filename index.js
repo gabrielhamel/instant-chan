@@ -52,7 +52,7 @@ async function createNewChild(instantChannel, guild) {
     });
 }
 
-async function bindChannel(res, guild, channelId) {
+async function bindChannel(res, channelId) {
     if (channelId === undefined) {
         if (res !== null) {
             res.send('Please specify a channel ID !');
@@ -138,14 +138,18 @@ bot.on('ready', () => {
                 return;
             }
 
+            if (!channel.permissionsFor(bot.user).has('MANAGE_CHANNELS')) {
+                return;
+            }
+
             // is a previous bound channel
-            bindChannel(null, guild, channel.id);
+            bindChannel(null, channel.id);
             instantChannelsRegistered.push(channel.name.replace(/ \(new\)$/gm, ''));
         });
         guild.channels.cache.forEach(channel => {
             // Try all subscribed channels
             instantChannelsRegistered.forEach(registered => {
-                const regex = new RegExp(`^${registered} #\\d+$`);
+                const regex = new RegExp(`^${registered} #\\d+$`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
                 if (channel.name.match(regex)) {
                     channel.delete().then(() => {}).catch(() => {});
                 }
@@ -222,7 +226,7 @@ bot.on('message', async obj => {
                 obj.channel.send('Access denied');
                 break;
             }
-            bindChannel(obj.channel, obj.guild, args[2]);
+            bindChannel(obj.channel, args[2]);
             break;
         default:
             obj.channel.send(`Invalid command. Type **${prefix} help** for more informations.`);
