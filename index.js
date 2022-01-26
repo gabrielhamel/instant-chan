@@ -138,7 +138,7 @@ bot.on('ready', () => {
                 return;
             }
 
-            if (!channel.permissionsFor(bot.user).has('MANAGE_CHANNELS')) {
+            if (!channel.permissionsFor(bot.user).has('MANAGE_CHANNELS') || !channel.permissionsFor(bot.user).has('MOVE_MEMBERS') || !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')) {
                 return;
             }
 
