@@ -1,8 +1,15 @@
 require('dotenv').config();
 
 const getenv = require('getenv');
-const Discord = require('discord.js');
-const bot = new Discord.Client();
+const { Client, Intents } = require('discord.js');
+const bot = new Client({
+    intents: new Intents([
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.DIRECT_MESSAGES,
+        Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.GUILD_MESSAGES
+    ])
+});
 
 const channelBounds = {};
 
@@ -22,15 +29,23 @@ async function bind(channel) {
     updateStatus(channelBounds[channel.id]);
 }
 
-function updateStatus(instantChannel) {
+async function updateStatus(instantChannel) {
     if (instantChannel.main.name !== `${instantChannel.name} (new)`) {
-        instantChannel.main.setName(`${instantChannel.name} (new)`);
+        try {
+            await instantChannel.main.setName(`${instantChannel.name} (new)`);
+        } catch (e) {
+            console.log("Can't set name of ", instantChannel.main);
+        }
     }
 
     // TODO
     let index = 1;
-    instantChannel.childs.forEach(child => {
-        child.setName(`${instantChannel.name} #${index++}`);
+    instantChannel.childs.forEach(async child => {
+        try {
+            await child.setName(`${instantChannel.name} #${index++}`);
+        } catch (e) {
+            console.log("Can't set name of ", child);
+        }
     });
 }
 
@@ -71,7 +86,7 @@ async function bindChannel(res, channelId) {
         return null;
     }
 
-    if (channel.type !== 'voice') {
+    if (channel.type !== 'GUILD_VOICE') {
         if (res !== null) {
             res.send('This is not a voice channel !');
         }
@@ -131,7 +146,7 @@ bot.on('ready', () => {
     bot.guilds.cache.forEach(guild => {
         const instantChannelsRegistered = [];
         guild.channels.cache.forEach(channel => {
-            if (channel.type !== 'voice') {
+            if (channel.type !== 'GUILD_VOICE') {
                 return;
             }
             if (channel.name.match(/ \(new\)$/gm) === null) {
@@ -143,7 +158,7 @@ bot.on('ready', () => {
             }
 
             // is a previous bound channel
-            bindChannel(null, channel.id);
+            bindChannel(null, channel.id)
             instantChannelsRegistered.push(channel.name.replace(/ \(new\)$/gm, ''));
         });
         guild.channels.cache.forEach(channel => {
@@ -173,9 +188,9 @@ bot.on('channelDelete', deleted => {
 // When a user join a channel
 bot.on('voiceStateUpdate', async (leaved, joined) => {
     // Check if user leave a channel
-    if (leaved.channelID !== null) {
+    if (leaved.channelId !== null) {
         // Channel leaved
-        const parent = findInstantChanParent(leaved.channelID);
+        const parent = findInstantChanParent(leaved.channelId);
         if (parent !== null) {
             // Check if the channel is empty
             if (parent.child.members.size === 0) {
@@ -186,12 +201,12 @@ bot.on('voiceStateUpdate', async (leaved, joined) => {
     }
 
     // Check if user join a new channel
-    if (joined === null || joined === undefined || joined.channelID === undefined || joined.channelID === null) {
+    if (!joined?.channelId) {
         return;
     }
 
     // Get and check the channel joined
-    const instChannel = channelBounds[joined.channelID];
+    const instChannel = channelBounds[joined.channelId];
     if (instChannel === undefined) {
         return;
     }
@@ -222,7 +237,7 @@ bot.on('message', async obj => {
             break;
         // Disabled for permissions
         case 'bind':
-            if (obj.member.hasPermission('MANAGE_CHANNELS') === false) {
+            if (obj.member.permissions.has('MANAGE_CHANNELS') === false) {
                 obj.channel.send('Access denied');
                 break;
             }
