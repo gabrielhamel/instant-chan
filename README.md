@@ -25,4 +25,4 @@ Invite the bot with [this url](https://discord.com/api/oauth2/authorize?client_i
 
 ### **Support**
 
-Contact `Gabouchet#0497` on our support server [discord servers](https://discord.gg/p29wzsQXxJ)
+Contact `Gabouchet#0506` on our support server [discord servers](https://discord.gg/p29wzsQXxJ)
