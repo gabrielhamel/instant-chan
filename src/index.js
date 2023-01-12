@@ -7,6 +7,7 @@ const {
   Events,
   Collection,
   ChannelType,
+  PermissionFlagsBits,
 } = require('discord.js');
 const bot = new Client({
   intents: [
@@ -171,9 +172,13 @@ bot.on('ready', async () => {
       }
 
       if (
-        !channel.permissionsFor(bot.user).has('MANAGE_CHANNELS') ||
-        !channel.permissionsFor(bot.user).has('MOVE_MEMBERS') ||
-        !channel.permissionsFor(bot.user).has('VIEW_CHANNEL')
+        !channel
+          .permissionsFor(bot.user)
+          .has(PermissionFlagsBits.ManageChannels) ||
+        !channel
+          .permissionsFor(bot.user)
+          .has(PermissionFlagsBits.MoveMembers) ||
+        !channel.permissionsFor(bot.user).has(PermissionFlagsBits.ViewChannel)
       ) {
         return;
       }
@@ -266,7 +271,9 @@ bot.on('message', async (obj) => {
       break;
     // Disabled for permissions
     case 'bind':
-      if (obj.member.permissions.has('MANAGE_CHANNELS') === false) {
+      if (
+        obj.member.permissions.has(PermissionFlagsBits.ManageChannels) === false
+      ) {
         obj.channel.send('Access denied');
         break;
       }
@@ -283,7 +290,10 @@ bot.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === 'bind') {
-    if (interaction.memberPermissions.has('MANAGE_CHANNELS') === false) {
+    if (
+      interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels) ===
+      false
+    ) {
       obj.channel.send('Access denied');
       return;
     }
