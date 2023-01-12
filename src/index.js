@@ -163,7 +163,7 @@ bot.on('ready', async () => {
   bot.guilds.cache.forEach((guild) => {
     const instantChannelsRegistered = [];
     guild.channels.cache.forEach((channel) => {
-      if (channel.type !== 'GUILD_VOICE') {
+      if (channel.type !== ChannelType.GuildVoice) {
         return;
       }
       if (channel.name.match(/ \(new\)$/gm) === null) {
