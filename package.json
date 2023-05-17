@@ -2,15 +2,21 @@
   "name": "instant-chan",
   "version": "1.0.0",
   "description": "Create voice channel instantly",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.ts",
+    "dev": "nodemon"
   },
   "author": "Gabriel Hamel",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "getenv": "^1.0.0"
+    "getenv": "^1.0.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
