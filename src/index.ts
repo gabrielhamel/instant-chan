@@ -13,10 +13,10 @@ require('dotenv').config()
 
 // Import
 const constant = require('../const/const')
-const bindChannel = require('./binding')
+const bindChannel = require('./binding').bindChannel
 const utils = require('../utils/utils')
 const bot = require('./client').bot
-const execute = require('./commands').execute()
+const execute = require('./commands').execute
 
 
 const getenv = require('getenv');

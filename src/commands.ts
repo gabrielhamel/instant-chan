@@ -25,7 +25,10 @@ const bind = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 };
 
-async function execute(interaction : any){
+async function execute(interaction : ChatInputCommandInteraction){
+    if (interaction === undefined){
+        return
+    }
     if (
         interaction &&
         interaction.memberPermissions &&
@@ -36,7 +39,7 @@ async function execute(interaction : any){
         interaction.channel.send('Access denied');
         return;
     }
-    const channelId = interaction!.options!.getChannel('channel')!.id;
+    const channelId = interaction?.options?.getChannel('channel')!.id;
 
     try {
         await bindChannel(null, channelId);

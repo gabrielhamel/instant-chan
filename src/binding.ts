@@ -3,7 +3,7 @@ import {GuildBasedChannel} from "discord.js";
 
 const {ChannelType} = require("discord.js");
 const client = require('./client')
-const updateStatus = require('../utils/utils')
+const updateStatus = require('../utils/utils').updateStatus
 
 // BDD TEMP parce que c'est de la merde :)
 const channelBounds : any = {};
