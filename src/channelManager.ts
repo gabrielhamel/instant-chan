@@ -1,10 +1,12 @@
+import {Guild} from "discord.js";
+
 const channelBounds = require('./binding').channelBounds
 const utils =require('../utils/utils')
-const bot = require('client')
+const bot = require('./client').bot
 
 // Create new channel  if parent is bound
 //TODO => guild parameter not used
-async function createNewChild(instantChannel, guild) {
+async function createNewChild(instantChannel : any, guild : Guild) {
     // Create the new child
     const child = await instantChannel.main.clone({
         name: `${instantChannel.name} #${instantChannel.childs.length + 1}`,
@@ -20,15 +22,15 @@ async function createNewChild(instantChannel, guild) {
     utils.updateStatus(instantChannel);
 
     // Move all members into the new channel
-    instantChannel.main.members.forEach((member) => {
+    instantChannel.main.members.forEach((member : any) => {
         member.voice.setChannel(child);
     });
 }
 
-function findInstantChanParent(childId) {
-    let result = null;
-    Object.keys(channelBounds).forEach((key) => {
-        channelBounds[key].childs.forEach((child) => {
+function findInstantChanParent(childId : any) {
+    let result : any = null;
+    Object.keys(channelBounds).forEach((key : any) => {
+        channelBounds[key].childs.forEach((child : any) => {
             if (childId === child.id) {
                 result = { parent: channelBounds[key], child };
                 return;
@@ -41,9 +43,9 @@ function findInstantChanParent(childId) {
     return result;
 }
 
-async function deleteChildChannel(parent, child) {
+async function deleteChildChannel(parent : any, child : any) {
     // Delete in the array
-    parent.childs = parent.childs.filter((elem) => elem.id !== child.id);
+    parent.childs = parent.childs.filter((elem : any) => elem.id !== child.id);
     try {
         await child.delete();
     } catch (err) {}
@@ -51,27 +53,26 @@ async function deleteChildChannel(parent, child) {
 }
 
 function initChannelManager(){
-    bot.on('channelDelete', (deleted) => {
+    bot.on('channelDelete', (deleted : any) => {
         const instantChan = channelBounds[deleted.id];
         if (instantChan !== undefined) {
             // Main instant chan deleted
             // delete all childs
-            instantChan.childs.forEach((channel) => {
+            instantChan.childs.forEach((channel : any) => {
                 channel
                     .delete()
-                    .then((_) => {})
-                    .catch((_) => {});
+                    .finally()
             });
             return;
         }
     });
 
 // When a user join a channel
-    bot.on('voiceStateUpdate', async (leaved, joined) => {
+    bot.on('voiceStateUpdate', async (leaved : any, joined : any) => {
         // Check if user leave a channel
         if (leaved.channelId !== null) {
             // Channel leaved
-            const parent = findInstantChanParent(leaved.channelId);
+            const parent : any = findInstantChanParent(leaved.channelId);
             if (parent !== null) {
                 // Check if the channel is empty
                 if (parent.child.members.size === 0) {
@@ -94,4 +95,8 @@ function initChannelManager(){
 
         await createNewChild(instChannel, joined.guild);
     });
+}
+
+module.exports = {
+    initChannelManager
 }
