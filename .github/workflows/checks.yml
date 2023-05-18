@@ -21,6 +21,26 @@ jobs:
         run: |
           npm run lint
 
+  Schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Node.js dependencies
+        run: |
+          npm ci
+
+      - name: Validate Prisma schema
+        env:
+          DATABASE_URL: 'postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public'
+        run: |
+          npx prisma validate
+
   Tests:
     runs-on: ubuntu-latest
     needs: Lint
