@@ -4,15 +4,6 @@ const colors = require('colors')
 // Set current FilePath
 let logsPath = ""
 
-
-// @ts-ignore
-const {
-    LOG_INFO = 1,
-    LOG_ERROR = 2
-}
-
-
-
 function initLogs() {
     // Set logs path
     const date = new Date()
@@ -26,8 +17,9 @@ function initLogs() {
     }
 
     // Creating or opening file
-    fs.writeFile(logsPath, 'LOGS OF ' + date + '\n\n', (err) => {
-        if (err) {
+    fs.writeFile(logsPath, 'LOGS OF ' + date + '\n\n', (err : any) => {
+        if (err){
+            console.log("Failed to create logs file : error : " + err)
         }
 
         // Preparing inital logs
@@ -37,7 +29,7 @@ function initLogs() {
             + date.getSeconds() + " - Logging file created \n"
 
         // Writing initial logs
-        fs.appendFile(logsPath, log, (err) => {
+        fs.appendFile(logsPath, log, (err : any) => {
             if (err) console.log("Failed to write after title in logs file ")
         })
     })
@@ -59,15 +51,21 @@ function logging(currentLog : string, goal : number) {
     }
 
     // Put log in the file
-    fs.appendFile(logsPath, log + '\n', (err) => {
-        if (err) console.log("Failed to write logs in file")
+    fs.appendFile(logsPath, log + '\n', (err : any) => {
+        if (err){
+            console.log("Failed to write logs in file")
+            initLogs()
+            fs.appendFile(logsPath, log + '\n', (err : any) => {
+
+            })
+        }
     })
 
     // Login console
     console.log(log)
 }
 
-function interaction(interaction){
+function interaction(interaction : any){
     logging(interaction.member.guild.name + " - "
         + interaction.member.user.username + " - "
         + interaction.commandName, LOG_INFO)

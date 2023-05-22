@@ -1,12 +1,8 @@
 // Config
-import * as constants from "constants";
 import {
-    ChatInputCommandInteraction,
     Guild,
     GuildBasedChannel,
-    GuildChannel,
     Interaction,
-    VoiceChannel
 } from "discord.js";
 
 require('dotenv').config()
@@ -56,7 +52,7 @@ bot.on('ready', async () => {
             }
 
             // is a previous bound channel
-            console.log(bindChannel)
+
             bindChannel(null, channel.id);
             instantChannelsRegistered.push(channel.name.replace(/ \(new\)$/gm, ''));
         });

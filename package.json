@@ -2,10 +2,10 @@
   "name": "instant-chan",
   "version": "1.0.0",
   "description": "Create voice channel instantly",
-  "main": "src/index.ts",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.ts",
-    "dev": "nodemon"
+    "start": "tsc && node src/index.js",
+    "dev": "nodemon -e *.ts"
   },
   "author": "Gabriel Hamel",
   "license": "ISC",

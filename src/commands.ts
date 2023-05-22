@@ -1,6 +1,8 @@
 import {ChatInputCommandInteraction, PermissionFlagsBits} from "discord.js";
-const { SlashCommandBuilder, REST, Routes } = require('discord.js');
-const bindding = require('./binding')
+import { SlashCommandBuilder, REST, Routes } from 'discord.js';
+import * as binding from './binding';
+
+console.log()
 
 const bind = {
     data: new SlashCommandBuilder()
@@ -42,8 +44,9 @@ async function execute(interaction : ChatInputCommandInteraction){
     const channelId = interaction?.options?.getChannel('channel')!.id;
 
     try {
-        console.log()
-        console.log(bindding)
+        // console.log(require('./binding.module'))
+        // console.log(binding);
+
         await require('./binding').bindChannel(null, channelId);
         interaction.reply({
             content: 'Success',
