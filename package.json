@@ -20,5 +20,13 @@
   "devDependencies": {
     "@types/getenv": "^1.0.0",
     "nodemon": "^2.0.22"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielhamel/instant-chan.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gabrielhamel/instant-chan/issues"
+  },
+  "homepage": "https://github.com/gabrielhamel/instant-chan#readme"
 }

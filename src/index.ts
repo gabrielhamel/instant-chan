@@ -51,7 +51,7 @@ bot.on('ready', async () => {
 
             logs.info(channel.id)
             logs.info(Number(channel.id))
-            bindChannel(null, Number(channel.id));
+            bindChannel(null, channel.id);
             instantChannelsRegistered.push(channel.name.replace(/ \(new\)$/gm, ''));
         });
         guild.channels.cache.forEach((channel : GuildBasedChannel) => {

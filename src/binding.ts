@@ -9,7 +9,7 @@ import {updateStatus} from '../utils/utils'
 export const channelBounds : any = {};
 
 // Check if one chanel is bound
-function isBound(channelId : number) {
+function isBound(channelId : string) {
     return channelBounds[channelId] !== undefined;
 }
 
@@ -26,7 +26,7 @@ async function bind(channel : GuildBasedChannel) {
 }
 
 // Bind a channel
-export async function bindChannel(res : any, channelId : number) {
+export async function bindChannel(res : any, channelId : string) {
     logs.info(channelId)
     logs.error(channelBounds)
     console.log(channelBounds)
