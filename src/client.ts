@@ -1,10 +1,12 @@
-const {
-    Client,
-    Collection,
-    GatewayIntentBits} = require("discord.js") ;
-const getenv = require('getenv')
+import {
+    ApplicationCommand, ApplicationCommandManager,
+    Client, Collection,
+    GatewayIntentBits
+} from "discord.js"
 
-const bot = new Client({
+import * as logs from 'ts_logger/src'
+
+export const bot = new Client({
     intents: [
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.GuildVoiceStates,
@@ -12,15 +14,13 @@ const bot = new Client({
         GatewayIntentBits.Guilds,
     ],
 });
+// console.log( bot.acte)
 
-bot.commands = new Collection();
 
-require('./commands').subscribe(bot);
-
+// require('./commands').subscribe(bot);
 
 // Connection to the bot
-bot.login(getenv('BOT_TOKEN'));
+bot.login(process.env.BOT_TOKEN).then(() =>  {
+    logs.info("Client ready !")
+});
 
-module.exports = {
-    bot
-}

@@ -1,7 +1,7 @@
 // Import
 const constant = require('../const/const')
 
-async function updateStatus(instantChannel : any) {
+export async function updateStatus(instantChannel : any) {
     if (instantChannel.main.name !== `${instantChannel.name} (new)`) {
         try {
             await instantChannel.main.setName(`${instantChannel.name} (new)`);
@@ -21,13 +21,3 @@ async function updateStatus(instantChannel : any) {
     });
 }
 
-function help(res : any) {
-    res.send(
-        `**${constant.PREFIX} bind <channelId>**: Transform a channel into an cloneable instance.`,
-    );
-}
-
-module.exports = {
-    updateStatus,
-    help
-}

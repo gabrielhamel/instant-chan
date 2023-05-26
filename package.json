@@ -14,9 +14,11 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "getenv": "^1.0.0",
+    "ts_logger": "github:Cedran-Bastien/TS_Logger#main",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
+    "@types/getenv": "^1.0.0",
     "nodemon": "^2.0.22"
   }
 }

@@ -1,8 +1,6 @@
 import {ChatInputCommandInteraction, PermissionFlagsBits} from "discord.js";
 import { SlashCommandBuilder, REST, Routes } from 'discord.js';
-import * as binding from './binding';
-
-console.log()
+import * as logs from 'ts_logger/src';
 
 const bind = {
     data: new SlashCommandBuilder()
@@ -27,7 +25,9 @@ const bind = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 };
 
-async function execute(interaction : ChatInputCommandInteraction){
+export async function execute(interaction : ChatInputCommandInteraction){
+
+    logs.interaction(interaction)
     if (interaction === undefined){
         return
     }
@@ -59,19 +59,14 @@ async function execute(interaction : ChatInputCommandInteraction){
     }
 }
 
-function subscribe(client : any) {
-    client.commands.set(bind.data.name, bind);
+export function subscribe(client : any) {
+    client.application.commands!.create(bind);
 }
 
-function register(client : any, token : any) {
+export function register(client : any, token : any) {
     const rest = new REST().setToken(token);
     return rest.put(Routes.applicationCommands(client.user.id), {
         body: [bind.data.toJSON()],
     });
 }
 
-module.exports = {
-    subscribe,
-    register,
-    execute
-};

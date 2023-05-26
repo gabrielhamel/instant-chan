@@ -1,31 +1,27 @@
 // Config
-import {
-    Guild,
-    GuildBasedChannel,
-    Interaction,
-} from "discord.js";
-
 require('dotenv').config()
 
 // Import
-const bindChannel = require('./binding').bindChannel
-const bot = require('./client').bot
-const execute = require('./commands').execute
-const channelManager = require('./channelManager')
+import * as logs from 'ts_logger/src'
+import {
+    Guild,
+    GuildBasedChannel,
+    Interaction, Role,
+} from "discord.js";
+import {bindChannel} from './binding'
+import {bot} from './client'
+import {execute} from './commands'
+import {initChannelManager} from './channelManager'
 
-
-const getenv = require('getenv');
-const {
-    // Client,
-    // GatewayIntentBits,
+import {
     Events,
     ChannelType,
-    // Collection,
-    // ChannelType,
     PermissionFlagsBits,
-} = require('discord.js');
+} from 'discord.js'
 
-channelManager.initChannelManager()
+
+logs.initLogs()
+initChannelManager()
 bot.on('ready', async () => {
     await require('./commands').register(bot, process.env.BOT_TOKEN);
 
@@ -41,19 +37,21 @@ bot.on('ready', async () => {
 
             if (
                 !channel
-                    .permissionsFor(bot.user)
+                    .permissionsFor(guild.members.me!)
                     .has(PermissionFlagsBits.ManageChannels) ||
                 !channel
-                    .permissionsFor(bot.user)
+                    .permissionsFor(guild.members.me!)
                     .has(PermissionFlagsBits.MoveMembers) ||
-                !channel.permissionsFor(bot.user).has(PermissionFlagsBits.ViewChannel)
+                !channel.permissionsFor(guild.members.me!).has(PermissionFlagsBits.ViewChannel)
             ) {
                 return;
             }
 
             // is a previous bound channel
 
-            bindChannel(null, channel.id);
+            logs.info(channel.id)
+            logs.info(Number(channel.id))
+            bindChannel(null, Number(channel.id));
             instantChannelsRegistered.push(channel.name.replace(/ \(new\)$/gm, ''));
         });
         guild.channels.cache.forEach((channel : GuildBasedChannel) => {

@@ -1,8 +1,8 @@
 import {Guild} from "discord.js";
 
-const channelBounds = require('./binding').channelBounds
-const utils =require('../utils/utils')
-const bot = require('./client').bot
+import {channelBounds} from './binding'
+import {updateStatus} from '../utils/utils'
+import {bot} from './client'
 
 // Create new channel  if parent is bound
 //TODO => guild parameter not used
@@ -19,7 +19,7 @@ async function createNewChild(instantChannel : any, guild : Guild) {
         .then(() => {})
         .catch(() => {});
 
-    utils.updateStatus(instantChannel);
+    updateStatus(instantChannel);
 
     // Move all members into the new channel
     instantChannel.main.members.forEach((member : any) => {
@@ -49,10 +49,10 @@ async function deleteChildChannel(parent : any, child : any) {
     try {
         await child.delete();
     } catch (err) {}
-    utils.updateStatus(parent);
+    updateStatus(parent);
 }
 
-function initChannelManager(){
+export function initChannelManager(){
     bot.on('channelDelete', (deleted : any) => {
         const instantChan = channelBounds[deleted.id];
         if (instantChan !== undefined) {
@@ -97,6 +97,3 @@ function initChannelManager(){
     });
 }
 
-module.exports = {
-    initChannelManager
-}

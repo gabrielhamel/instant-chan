@@ -1,12 +1,12 @@
 // Import
 import {GuildBasedChannel} from "discord.js";
-
-const {ChannelType} = require("discord.js");
-const client = require('./client')
-const updateStatus = require('../utils/utils').updateStatus
+import * as logs from 'ts_logger/src'
+import {ChannelType} from "discord.js"
+import {bot} from './client'
+import {updateStatus} from '../utils/utils'
 
 // BDD TEMP parce que c'est de la merde :)
-const channelBounds : any = {};
+export const channelBounds : any = {};
 
 // Check if one chanel is bound
 function isBound(channelId : number) {
@@ -15,6 +15,7 @@ function isBound(channelId : number) {
 
 // Save channel to bind in BDD
 async function bind(channel : GuildBasedChannel) {
+    logs.error("here")
     channelBounds[channel.id] = {
         name: channel.name.replace(/ \(new\)$/gm, ''),
         main: channel,
@@ -25,7 +26,10 @@ async function bind(channel : GuildBasedChannel) {
 }
 
 // Bind a channel
-async function bindChannel(res : any, channelId : number) {
+export async function bindChannel(res : any, channelId : number) {
+    logs.info(channelId)
+    logs.error(channelBounds)
+    console.log(channelBounds)
     if (channelId === undefined) {
         if (res !== null) {
             res.send('Please specify a channel ID !');
@@ -36,15 +40,18 @@ async function bindChannel(res : any, channelId : number) {
     // Get the concerned channel
     let channel;
     try {
-        channel = await client.bot.channels.fetch(channelId);
+        channel = await bot.channels.fetch(channelId.toString());
     } catch (err) {
+        // console.log(err)
+        logs.info(err)
         if (res !== null) {
             res.send('Channel not found ! ');
         }
         return null;
     }
 
-    if (channel.type !== ChannelType.GuildVoice) {
+    if (channel!.type !== ChannelType.GuildVoice) {
+        logs.error("not voice")
         if (res !== null) {
             res.send('This is not a voice channel !');
         }
@@ -53,6 +60,7 @@ async function bindChannel(res : any, channelId : number) {
 
     // Is already bound ?
     if (isBound(channelId) === true) {
+        logs.error("isbound")
         if (res !== null) {
             res.send('This channel is already bound !');
         }
@@ -68,11 +76,7 @@ async function bindChannel(res : any, channelId : number) {
     if (res !== null) {
         res.send(`Instant channel **${channel.name}** bound !`);
     }
-    return channelBounds[channelId];
-}
+    console.log(channelId)
 
-// Exports
-module.exports = {
-    channelBounds,
-    bindChannel
+    return channelBounds[channelId];
 }
