@@ -1,16 +1,30 @@
 {
   "name": "instant-chan",
-  "version": "1.0.0",
-  "description": "Create voice channel instantly",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Duplicates vocals channels to sub-channels by cloning. Useful on gaming servers when you create squad with you friends",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
-  "author": "Gabriel Hamel",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3",
-    "getenv": "^1.0.0"
+  "author": {
+    "name": "Gabriel Hamel",
+    "email": "gabriel.hamel.pro@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielhamel/instant-chan.git"
+  },
+  "keywords": [
+    "channels",
+    "discord-bot"
+  ],
+  "bugs": {
+    "url": "https://github.com/gabrielhamel/instant-chan/issues"
+  },
+  "homepage": "https://github.com/gabrielhamel/instant-chan#readme",
+  "devDependencies": {
+    "typescript": "^5.3.3"
   }
 }
