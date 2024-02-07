@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "Duplicates vocals channels to sub-channels by cloning. Useful on gaming servers when you create squad with you friends",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">= 18"
+  },
   "scripts": {
     "start": "npm run build && node dist/index.js",
     "build": "tsc",
