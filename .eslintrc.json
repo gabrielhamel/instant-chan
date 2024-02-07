@@ -1,0 +1,61 @@
+{
+  "extends": [
+    "prettier",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "simple-import-sort", "sort-keys-fix"],
+  "rules": {
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "sort-keys-fix/sort-keys-fix": "error",
+    "@typescript-eslint/no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["*.tsx", "*.ts", "*.js"],
+            "message":
+            "usage of the file extension [\"*.tsx\", \"*.ts\", \"*.js\"] in import or export is not allowed."
+          }
+        ]
+      }
+    ]
+  },
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "overrides": [
+    // override "simple-import-sort" config
+    {
+      "files": ["*.js", "*.ts"],
+      "rules": {
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              /*
+              Order:
+                - Internal packages.
+                - Side effect imports.
+                - Parent imports. Put `..` last.
+                - Other relative imports. Put same-folder imports and `.` last.
+              */
+              [
+                "^@?\\w",
+                "^\\u0000", "^\\.\\.(?!/?$)",
+                "^\\.\\./?$",
+                "^\\./(?=.*/)(?!/?$)",
+                "^\\.(?!/?$)",
+                "^\\./?$"
+              ]
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
