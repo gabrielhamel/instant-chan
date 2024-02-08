@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "npm run build && node dist/index.js",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "test": "vitest --run",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"**/*.{ts,md}\""

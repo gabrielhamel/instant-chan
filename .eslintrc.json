@@ -19,7 +19,7 @@
           {
             "group": ["*.tsx", "*.ts", "*.js"],
             "message":
-            "usage of the file extension [\"*.tsx\", \"*.ts\", \"*.js\"] in import or export is not allowed."
+            "usage of the file extension [\"*.ts\", \"*.js\"] in import or export is not allowed."
           }
         ]
       }
