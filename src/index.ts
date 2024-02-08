@@ -1,6 +1,6 @@
 import { Client, Events, VoiceState } from "discord.js";
-import { handleVoiceStateUpdate } from "./core/events";
-import { DiscordVoiceState } from "./discord/implementations/voiceState";
+import { DiscordUserState } from "./adapters/discord/userState";
+import { onUserJoinChannel } from "./core/events";
 
 const bot = new Client({
   intents: 0,
@@ -9,9 +9,9 @@ const bot = new Client({
 bot.on(
   Events.VoiceStateUpdate,
   async (oldState: VoiceState, newState: VoiceState) => {
-    const oldVoiceState = new DiscordVoiceState(oldState);
-    const newVoiceState = new DiscordVoiceState(newState);
+    const oldUserState = new DiscordUserState(oldState);
+    const newUserState = new DiscordUserState(newState);
 
-    await handleVoiceStateUpdate(oldVoiceState, newVoiceState);
+    await onUserJoinChannel(oldUserState, newUserState);
   },
 );

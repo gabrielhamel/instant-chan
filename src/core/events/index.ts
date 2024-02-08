@@ -1,1 +1,1 @@
-export * from "./voiceStateUpdate";
+export * from "./onUserJoinChannel";

@@ -1,18 +1,18 @@
 import { Channel } from "../interfaces/channel";
 import { User } from "../interfaces/user";
-import { VoiceState } from "../interfaces/voiceState";
+import { UserState } from "../interfaces/userState";
 
-const relocateVoiceChannelMembers = async (
+const relocateChannelMembers = async (
   source: Channel,
   destination: Channel,
 ) => {
   const membersToMove = source.getUsers();
 
-  const relocateMemberToNewVoiceChannel = (member: User) =>
-    member.setVoiceChannel(destination);
+  const relocateMemberToNewChannel = (member: User) =>
+    member.setChannel(destination);
 
   const relocateMembersToNewChannel = membersToMove.map(
-    relocateMemberToNewVoiceChannel,
+    relocateMemberToNewChannel,
   );
 
   await Promise.all(relocateMembersToNewChannel);
@@ -20,13 +20,20 @@ const relocateVoiceChannelMembers = async (
 
 const cloneChannelAndRelocateUsers = async (source: Channel) => {
   const newChannel = await source.clone();
-  await relocateVoiceChannelMembers(source, newChannel);
+  await relocateChannelMembers(source, newChannel);
 };
 
-export const handleVoiceStateUpdate = async (
-  oldState: VoiceState,
-  newState: VoiceState,
+export const onUserJoinChannel = async (
+  oldState: UserState,
+  newState: UserState,
 ) => {
   const joinedChannel = newState.getChannel();
+
+  if (!joinedChannel) {
+    throw new Error(
+      `USER_STATE_NULL_CHANNEL: No channel associated to the user state ${newState.getId()}`,
+    );
+  }
+
   await cloneChannelAndRelocateUsers(joinedChannel);
 };
