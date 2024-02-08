@@ -17,9 +17,9 @@
       {
         "patterns": [
           {
-            "group": ["*.tsx", "*.ts", "*.js"],
+            "group": ["*.ts"],
             "message":
-            "usage of the file extension [\"*.ts\", \"*.js\"] in import or export is not allowed."
+            "usage of the file extension [\"*.ts\"] in import or export is not allowed."
           }
         ]
       }
