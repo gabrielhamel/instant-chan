@@ -1,3 +1,4 @@
+import { UserStateNullChannel } from "../exceptions/userStateNullChannel";
 import { Channel } from "../interfaces/channel";
 import { User } from "../interfaces/user";
 import { UserState } from "../interfaces/userState";
@@ -30,9 +31,7 @@ export const onUserJoinChannel = async (
   const joinedChannel = newState.getChannel();
 
   if (!joinedChannel) {
-    throw new Error(
-      `USER_STATE_NULL_CHANNEL: No channel associated to the user state ${newState.getId()}`,
-    );
+    throw new UserStateNullChannel(newState.getId());
   }
 
   await cloneChannelAndRelocateUsers(joinedChannel);

@@ -51,14 +51,18 @@ describe("On user join a channel", () => {
   });
 
   it("Should raise an error if the user didn't move to a new channel", async () => {
-    const oldState: UserState = { getChannel: vi.fn(), getId: vi.fn() };
-    const newState: UserState = {
-      getChannel: vi.fn().mockReturnValue(null),
+    const oldState: UserState = {
+      getChannel: vi.fn(),
       getId: vi.fn(),
     };
+    const newState: UserState = {
+      getChannel: vi.fn().mockReturnValue(null),
+      getId: vi.fn<unknown[], string>().mockReturnValue("state-id-1"),
+    };
 
-    await expect(onUserJoinChannel(oldState, newState)).rejects.toThrowError(
-      /USER_STATE_NULL_CHANNEL/,
+    const call = () => onUserJoinChannel(oldState, newState);
+    await expect(call).rejects.toThrowError(
+      "No channel associated to the user state state-id-1",
     );
   });
 });

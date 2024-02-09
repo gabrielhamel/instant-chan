@@ -1,6 +1,6 @@
 import { Client, Events, VoiceState } from "discord.js";
 import { DiscordUserState } from "./adapters/discord/userState";
-import { onUserJoinChannel } from "./core/events";
+import { onUserJoinChannel } from "./core/events/onUserJoinChannel";
 
 const bot = new Client({
   intents: 0,
