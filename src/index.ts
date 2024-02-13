@@ -1,7 +1,8 @@
 import { Client, Events, GatewayIntentBits, VoiceState } from "discord.js";
 import dotenv from "dotenv";
-import { DiscordUserState } from "./adapters/discord/userState";
 import { onUserJoinChannel } from "./core/events/onUserJoinChannel";
+import { DiscordUserState } from "./discord/adapters/userState";
+import { DiscordChannelRepository } from "./discord/repositories/channel";
 
 void (async () => {
   dotenv.config();
@@ -10,13 +11,18 @@ void (async () => {
     intents: GatewayIntentBits.GuildVoiceStates,
   });
 
+  const discordChannelRepository = new DiscordChannelRepository(discordClient);
+
   discordClient.on(
     Events.VoiceStateUpdate,
     async (oldState: VoiceState, newState: VoiceState) => {
       const oldUserState = new DiscordUserState(oldState);
       const newUserState = new DiscordUserState(newState);
 
-      await onUserJoinChannel(oldUserState, newUserState);
+      await onUserJoinChannel(discordChannelRepository)(
+        oldUserState,
+        newUserState,
+      );
     },
   );
 
