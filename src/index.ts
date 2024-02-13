@@ -1,8 +1,8 @@
+import { onUserJoinChannel } from "@core/events";
+import { DiscordUserState } from "@discord/adapters";
+import { DiscordChannelRepository } from "@discord/repositories";
 import { Client, Events, GatewayIntentBits, VoiceState } from "discord.js";
 import dotenv from "dotenv";
-import { onUserJoinChannel } from "./core/events/onUserJoinChannel";
-import { DiscordUserState } from "./discord/adapters/userState";
-import { DiscordChannelRepository } from "./discord/repositories/channel";
 
 void (async () => {
   dotenv.config();

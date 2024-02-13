@@ -33,7 +33,8 @@
   },
   "homepage": "https://github.com/gabrielhamel/instant-chan#readme",
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@stryker-mutator/core": "^8.2.3",

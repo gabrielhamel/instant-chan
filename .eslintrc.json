@@ -31,7 +31,7 @@
   "overrides": [
     // override "simple-import-sort" config
     {
-      "files": ["*.js", "*.ts"],
+      "files": ["*.ts"],
       "rules": {
         "simple-import-sort/imports": [
           "error",

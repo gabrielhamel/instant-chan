@@ -1,4 +1,4 @@
-import { Channel } from "../ports/channel";
+import { Channel } from "@core/ports";
 
 export interface ChannelRepository {
   getById(id: string): Promise<Channel>;

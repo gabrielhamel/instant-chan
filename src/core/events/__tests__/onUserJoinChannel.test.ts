@@ -1,9 +1,7 @@
+import { onUserJoinChannel } from "@core/events";
+import { Channel, User, UserState } from "@core/ports";
+import { ChannelRepository } from "@core/repositories";
 import { describe, expect, it, vi } from "vitest";
-import { Channel } from "../../ports/channel";
-import { User } from "../../ports/user";
-import { UserState } from "../../ports/userState";
-import { ChannelRepository } from "../../repositories/channel";
-import { onUserJoinChannel } from "../onUserJoinChannel";
 
 describe("On user join a channel", () => {
   it("Should clone the channel from where the user come", async () => {

@@ -1,5 +1,5 @@
+import { Channel } from "@core/ports";
 import { VoiceBasedChannel as EncapsulatedChannel } from "discord.js";
-import { Channel } from "../../core/ports/channel";
 import { DiscordUser } from "./user";
 
 export class DiscordChannel implements Channel {

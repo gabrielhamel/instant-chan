@@ -1,8 +1,6 @@
-import { UserStateNullChannel } from "../exceptions/userStateNullChannel";
-import { Channel } from "../ports/channel";
-import { User } from "../ports/user";
-import { UserState } from "../ports/userState";
-import { ChannelRepository } from "../repositories/channel";
+import { UserStateNullChannel } from "@core/exceptions";
+import { Channel, User, UserState } from "@core/ports";
+import { ChannelRepository } from "@core/repositories";
 
 const relocateChannelMembers = async (
   source: Channel,
@@ -27,7 +25,7 @@ const cloneChannelAndRelocateUsers = async (source: Channel) => {
 
 export const onUserJoinChannel =
   (channelRepository: ChannelRepository) =>
-  async (oldState: UserState, newState: UserState) => {
+  async (_oldState: UserState, newState: UserState) => {
     const joinedChannelId = newState.getChannelId();
 
     if (!joinedChannelId) {

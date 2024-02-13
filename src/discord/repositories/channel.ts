@@ -1,8 +1,10 @@
+import { ChannelRepository } from "@core/repositories";
+import { DiscordChannel } from "@discord/adapters";
+import {
+  DiscordChannelIncompatible,
+  DiscordChannelNotFound,
+} from "@discord/exceptions";
 import { Client } from "discord.js";
-import { ChannelRepository } from "../../core/repositories/channel";
-import { DiscordChannel } from "../adapters/channel";
-import { DiscordChannelIncompatible } from "../exceptions/channelIncompatible";
-import { DiscordChannelNotFound } from "../exceptions/channelNotFound";
 
 export class DiscordChannelRepository implements ChannelRepository {
   constructor(protected client: Client) {}
