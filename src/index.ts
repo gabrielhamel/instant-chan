@@ -2,11 +2,8 @@ import { onUserJoinChannel } from "@core/events";
 import { DiscordUserState } from "@discord/adapters";
 import { DiscordChannelRepository } from "@discord/repositories";
 import { Client, Events, GatewayIntentBits, VoiceState } from "discord.js";
-import dotenv from "dotenv";
 
 void (async () => {
-  dotenv.config();
-
   const discordClient = new Client({
     intents: GatewayIntentBits.GuildVoiceStates,
   });
