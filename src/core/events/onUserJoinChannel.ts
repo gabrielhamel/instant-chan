@@ -18,11 +18,6 @@ const relocateChannelMembers = async (
   await Promise.all(relocateMembersToNewChannel);
 };
 
-const cloneChannelAndRelocateUsers = async (source: Channel) => {
-  const newChannel = await source.clone();
-  await relocateChannelMembers(source, newChannel);
-};
-
 export const onUserJoinChannel =
   (channelRepository: ChannelRepository) =>
   async (_oldState: UserState, newState: UserState) => {
@@ -34,5 +29,6 @@ export const onUserJoinChannel =
 
     const joinedChannel = await channelRepository.getById(joinedChannelId);
 
-    await cloneChannelAndRelocateUsers(joinedChannel);
+    const clonedChannel = await joinedChannel.clone();
+    await relocateChannelMembers(joinedChannel, clonedChannel);
   };

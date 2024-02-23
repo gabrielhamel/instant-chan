@@ -10,6 +10,7 @@
     "start": "npm run build && node dist/index.js",
     "build": "tsc --project tsconfig.build.json && tsc-alias --project tsconfig.build.json",
     "test": "vitest --run",
+    "test:watch": "vitest",
     "test:coverage": "vitest --run --coverage",
     "test:mutation": "stryker run",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",

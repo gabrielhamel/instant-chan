@@ -1,82 +1,58 @@
 import { onUserJoinChannel } from "@core/events";
-import { Channel } from "@core/ports";
-import { ChannelRepository } from "@core/repositories";
+import { Channel, User } from "@core/ports";
 import { describe, expect, it, vi } from "vitest";
+import { anyChannel, anyUserState, InMemoryChannelRepository } from "./utils";
 
 describe("On user join a channel", () => {
   it("Should clone the channel from where the user come", async () => {
-    const cloneMock = vi.fn();
-
-    const channelRepository: ChannelRepository = {
-      getById: () =>
-        Promise.resolve({
-          clone: cloneMock,
-          getId: () => "channel-id-1",
-          getUsers: () => [],
-        }),
+    const channelToClone: Channel = {
+      ...anyChannel,
+      clone: vi.fn(),
     };
+    const channelRepository = new InMemoryChannelRepository({
+      "channel-id-1": channelToClone,
+    });
 
-    await onUserJoinChannel(channelRepository)(
-      {
-        getChannelId: () => null,
-      },
-      {
-        getChannelId: () => "channel-id-1",
-      },
-    );
+    await onUserJoinChannel(channelRepository)(anyUserState, {
+      getChannelId: () => "channel-id-1",
+    });
 
-    expect(cloneMock).toHaveBeenCalledOnce();
+    expect(channelToClone.clone).toHaveBeenCalled();
   });
 
   it("Should move every members from the previous channel to the cloned one", async () => {
-    const setChannelMock = vi.fn();
-
-    const channelClonedStub: Channel = {
-      clone: () => Promise.reject(),
-      getId: () => "",
-      getUsers: () => [],
+    const user: User = { setChannel: vi.fn() };
+    const clonedChannel: Channel = anyChannel;
+    const channelToClone = {
+      ...anyChannel,
+      clone: () => Promise.resolve(clonedChannel),
+      getUsers: () => [user],
     };
+    const channelRepository = new InMemoryChannelRepository({
+      "channel-id-1": channelToClone,
+    });
 
-    const channelRepository: ChannelRepository = {
-      getById: () =>
-        Promise.resolve({
-          clone: () => Promise.resolve(channelClonedStub),
-          getId: () => "channel-id-1",
-          getUsers: () => [
-            {
-              setChannel: setChannelMock,
-            },
-          ],
-        }),
-    };
+    await onUserJoinChannel(channelRepository)(anyUserState, {
+      getChannelId: () => "channel-id-1",
+    });
 
-    await onUserJoinChannel(channelRepository)(
-      { getChannelId: () => null },
-      {
-        getChannelId: () => "channel-id-1",
-      },
-    );
-
-    expect(setChannelMock).toHaveBeenCalledWith(channelClonedStub);
+    expect(user.setChannel).toHaveBeenCalledWith(clonedChannel);
   });
 
   it("Should raise an error if the user leave a channel without joining a new one", async () => {
-    const channelRepository: ChannelRepository = {
-      getById: () => Promise.reject(),
-    };
+    const channelRepository = new InMemoryChannelRepository();
 
     const onUserLeave = () =>
-      onUserJoinChannel(channelRepository)(
-        {
-          getChannelId: () => null,
-        },
-        {
-          getChannelId: () => null,
-        },
-      );
+      onUserJoinChannel(channelRepository)(anyUserState, {
+        getChannelId: () => null,
+      });
 
     await expect(onUserLeave).rejects.toThrowError(
       "No channel associated to the user state",
     );
   });
+
+  it.todo(
+    "Shouldn't create a new channel if the joined arent allowed to be cloneable",
+  );
 });
