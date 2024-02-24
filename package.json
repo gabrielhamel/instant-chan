@@ -1,16 +1,55 @@
 {
   "name": "instant-chan",
-  "version": "1.0.0",
-  "description": "Create voice channel instantly",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/index.js"
+  "version": "2.0.0",
+  "description": "Duplicates vocals channels to sub-channels by cloning. Useful on gaming servers when you create squad with you friends",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">= 18"
   },
-  "author": "Gabriel Hamel",
-  "license": "ISC",
+  "scripts": {
+    "start": "npm run build && node dist/index.js",
+    "build": "tsc --project tsconfig.build.json && tsc-alias --project tsconfig.build.json",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest --run --coverage",
+    "test:mutation": "stryker run",
+    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"**/*.{ts,md}\""
+  },
+  "author": {
+    "name": "Gabriel Hamel",
+    "email": "gabriel.hamel.pro@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielhamel/instant-chan.git"
+  },
+  "keywords": [
+    "channels",
+    "discord-bot"
+  ],
+  "bugs": {
+    "url": "https://github.com/gabrielhamel/instant-chan/issues"
+  },
+  "homepage": "https://github.com/gabrielhamel/instant-chan#readme",
   "dependencies": {
-    "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3",
-    "getenv": "^1.0.0"
+    "discord.js": "^14.14.1"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^8.2.3",
+    "@stryker-mutator/vitest-runner": "^8.2.3",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitest/coverage-v8": "^1.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "prettier": "^3.2.5",
+    "tsc-alias": "^1.8.8",
+    "typescript": "^5.3.3",
+    "vite-tsconfig-paths": "^4.3.1",
+    "vitest": "^1.2.2"
   }
 }
