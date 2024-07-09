@@ -1,22 +1,22 @@
-const { SlashCommandBuilder, REST, Routes } = require('discord.js');
+const { SlashCommandBuilder, REST, Routes } = require("discord.js");
 
 const bind = {
   data: new SlashCommandBuilder()
-    .setName('bind')
-    .setNameLocalization('fr', 'lier')
+    .setName("bind")
+    .setNameLocalization("fr", "lier")
     .setDescription('Transform one vocal channel to a "channel duplicator"')
     .setDescriptionLocalization(
-      'fr',
-      'Transforme un canal vocal en duplicateur de canal',
+      "fr",
+      "Transforme un canal vocal en duplicateur de canal",
     )
     .addChannelOption((channel) =>
       channel
-        .setName('channel')
-        .setNameLocalization('fr', 'canal')
-        .setDescription('Channel you want to bind to instant-chan')
+        .setName("channel")
+        .setNameLocalization("fr", "canal")
+        .setDescription("Channel you want to bind to instant-chan")
         .setDescriptionLocalization(
-          'fr',
-          'Le canal à ratacher au bot instant-chan',
+          "fr",
+          "Le canal à ratacher au bot instant-chan",
         )
         .setRequired(true),
     ),

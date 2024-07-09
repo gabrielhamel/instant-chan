@@ -1,6 +1,6 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const getenv = require('getenv');
+const getenv = require("getenv");
 const {
   Client,
   GatewayIntentBits,
@@ -8,7 +8,7 @@ const {
   Collection,
   ChannelType,
   PermissionFlagsBits,
-} = require('discord.js');
+} = require("discord.js");
 const bot = new Client({
   intents: [
     GatewayIntentBits.DirectMessages,
@@ -20,11 +20,11 @@ const bot = new Client({
 
 bot.commands = new Collection();
 
-require('./commands').subscribe(bot);
+require("./commands").subscribe(bot);
 
 const channelBounds = {};
 
-const prefix = '!instant';
+const prefix = "!instant";
 
 function isBound(channelId) {
   return channelBounds[channelId] !== undefined;
@@ -32,7 +32,7 @@ function isBound(channelId) {
 
 async function bind(channel) {
   channelBounds[channel.id] = {
-    name: channel.name.replace(/ \(new\)$/gm, ''),
+    name: channel.name.replace(/ \(new\)$/gm, ""),
     main: channel,
     childs: [],
   };
@@ -84,7 +84,7 @@ async function createNewChild(instantChannel, guild) {
 async function bindChannel(res, channelId) {
   if (channelId === undefined) {
     if (res !== null) {
-      res.send('Please specify a channel ID !');
+      res.send("Please specify a channel ID !");
     }
     return null;
   }
@@ -95,14 +95,14 @@ async function bindChannel(res, channelId) {
     channel = await bot.channels.fetch(channelId);
   } catch (err) {
     if (res !== null) {
-      res.send('Channel not found ! ');
+      res.send("Channel not found ! ");
     }
     return null;
   }
 
   if (channel.type !== ChannelType.GuildVoice) {
     if (res !== null) {
-      res.send('This is not a voice channel !');
+      res.send("This is not a voice channel !");
     }
     return null;
   }
@@ -110,13 +110,13 @@ async function bindChannel(res, channelId) {
   // Is already bound ?
   if (isBound(channelId) === true) {
     if (res !== null) {
-      res.send('This channel is already bound !');
+      res.send("This channel is already bound !");
     }
     return channelBounds[channelId];
   }
 
   // Remove parenthesis
-  channel.name = channel.name.replace(/ \(new\)$/gm, '');
+  channel.name = channel.name.replace(/ \(new\)$/gm, "");
 
   // Bind him
   await bind(channel);
@@ -158,8 +158,8 @@ async function deleteChildChannel(parent, child) {
   updateStatus(parent);
 }
 
-bot.on('ready', async () => {
-  await require('./commands').register(bot, getenv('BOT_TOKEN'));
+bot.on("ready", async () => {
+  await require("./commands").register(bot, getenv("BOT_TOKEN"));
 
   bot.guilds.cache.forEach((guild) => {
     const instantChannelsRegistered = [];
@@ -185,13 +185,13 @@ bot.on('ready', async () => {
 
       // is a previous bound channel
       bindChannel(null, channel.id);
-      instantChannelsRegistered.push(channel.name.replace(/ \(new\)$/gm, ''));
+      instantChannelsRegistered.push(channel.name.replace(/ \(new\)$/gm, ""));
     });
     guild.channels.cache.forEach((channel) => {
       // Try all subscribed channels
       instantChannelsRegistered.forEach((registered) => {
         const regex = new RegExp(
-          `^${registered} #\\d+$`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+          `^${registered} #\\d+$`.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
         );
         if (channel.name.match(regex)) {
           channel
@@ -204,7 +204,7 @@ bot.on('ready', async () => {
   });
 });
 
-bot.on('channelDelete', (deleted) => {
+bot.on("channelDelete", (deleted) => {
   const instantChan = channelBounds[deleted.id];
   if (instantChan !== undefined) {
     // Main instant chan deleted
@@ -220,7 +220,7 @@ bot.on('channelDelete', (deleted) => {
 });
 
 // When a user join a channel
-bot.on('voiceStateUpdate', async (leaved, joined) => {
+bot.on("voiceStateUpdate", async (leaved, joined) => {
   // Check if user leave a channel
   if (leaved.channelId !== null) {
     // Channel leaved
@@ -248,7 +248,7 @@ bot.on('voiceStateUpdate', async (leaved, joined) => {
   await createNewChild(instChannel, joined.guild);
 });
 
-bot.on('message', async (obj) => {
+bot.on("message", async (obj) => {
   const user = obj.author;
 
   // To avoid chain reaction
@@ -263,18 +263,18 @@ bot.on('message', async (obj) => {
     return;
   }
 
-  const args = msg.split(' ');
+  const args = msg.split(" ");
 
   switch (args[1]) {
-    case 'help':
+    case "help":
       await help(obj.channel);
       break;
     // Disabled for permissions
-    case 'bind':
+    case "bind":
       if (
         obj.member.permissions.has(PermissionFlagsBits.ManageChannels) === false
       ) {
-        obj.channel.send('Access denied');
+        obj.channel.send("Access denied");
         break;
       }
       bindChannel(obj.channel, args[2]);
@@ -289,28 +289,28 @@ bot.on('message', async (obj) => {
 bot.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === 'bind') {
+  if (interaction.commandName === "bind") {
     if (
       interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels) ===
       false
     ) {
-      obj.channel.send('Access denied');
+      obj.channel.send("Access denied");
       return;
     }
-    const channelId = interaction.options.getChannel('channel').id;
+    const channelId = interaction.options.getChannel("channel").id;
 
     try {
       await bindChannel(null, channelId);
       interaction.reply({
-        content: 'Success',
+        content: "Success",
       });
     } catch (e) {
       console.error(e);
       interaction.reply({
-        content: 'Error',
+        content: "Error",
       });
     }
   }
 });
 
-bot.login(getenv('BOT_TOKEN'));
+bot.login(getenv("BOT_TOKEN"));
