@@ -6,6 +6,8 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "dev": "tsx --env-file=.env --watch src/index.ts",
+    "lint": "eslint",
+    "format": "prettier -c '**/*.{mjs,ts}'",
     "test": "vitest --run",
     "test:watch": "vitest --watch"
   },
