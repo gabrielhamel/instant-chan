@@ -4,19 +4,20 @@
   "description": "Create voice channel instantly",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "tsx --watch src/index.ts"
+    "start": "tsx src/index.ts",
+    "dev": "tsx --env-file=.env --watch src/index.ts",
+    "test": "vitest --run",
+    "test:watch": "vitest --watch"
   },
+  "license": "MIT",
   "author": {
     "email": "gabriel.hamel.pro@gmail.com",
     "name": "Gabriel Hamel",
     "url": "https://gabrielhamel.fr"
   },
-  "license": "MIT",
   "dependencies": {
-    "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3",
-    "getenv": "^1.0.0"
+    "discord.js": "^14.15.3",
+    "effect": "^3.5.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
@@ -26,7 +27,8 @@
     "prettier": "^3.3.2",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.0"
+    "typescript-eslint": "^7.16.0",
+    "vitest": "^2.0.3"
   },
   "overrides": {
     "eslint": "^9.6.0"
